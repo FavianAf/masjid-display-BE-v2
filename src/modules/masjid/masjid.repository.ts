@@ -74,6 +74,9 @@ export async function updateScalarSettings(tx: Tx, masjidId: string, input: Scal
   const updateData: Partial<typeof masjidSettings.$inferInsert> = { updatedAt: new Date() };
   if ("city_id" in input && input.city_id !== undefined) updateData.cityId = input.city_id;
   if (input.city_name !== undefined) updateData.cityName = input.city_name;
+  if ("address" in input && input.address !== undefined) updateData.address = input.address;
+  if ("latitude" in input && input.latitude !== undefined) updateData.latitude = input.latitude;
+  if ("longitude" in input && input.longitude !== undefined) updateData.longitude = input.longitude;
   if (input.iqomah_subuh !== undefined) updateData.iqomahSubuh = input.iqomah_subuh;
   if (input.iqomah_dzuhur !== undefined) updateData.iqomahDzuhur = input.iqomah_dzuhur;
   if (input.iqomah_ashar !== undefined) updateData.iqomahAshar = input.iqomah_ashar;

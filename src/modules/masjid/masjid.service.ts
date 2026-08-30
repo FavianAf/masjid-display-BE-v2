@@ -37,6 +37,9 @@ function toSettingsResponse(row: repo.SettingsAggregate) {
     masjid_id: row.masjidId,
     city_id: row.cityId,
     city_name: row.cityName,
+    address: row.address,
+    latitude: row.latitude,
+    longitude: row.longitude,
     medias: row.medias.map((m) => ({
       id: m.id,
       masjid_id: m.masjidId,

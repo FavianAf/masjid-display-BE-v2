@@ -84,6 +84,46 @@ describe("settings validation limits", () => {
     );
     expect(status).toBe(200);
   });
+
+  it("rejects an out-of-range latitude", async () => {
+    const { status, json } = await request("POST", "/api/masjid/settings", { latitude: 91 }, auth());
+    expect(status).toBe(400);
+    expect(json.responseMessage).toContain("latitude");
+  });
+
+  it("rejects an out-of-range longitude", async () => {
+    const { status, json } = await request("POST", "/api/masjid/settings", { longitude: -181 }, auth());
+    expect(status).toBe(400);
+    expect(json.responseMessage).toContain("longitude");
+  });
+});
+
+describe("address and coordinates", () => {
+  it("saves and returns address/latitude/longitude, and allows clearing them back to null", async () => {
+    const saved = await request(
+      "POST",
+      "/api/masjid/settings",
+      { address: "Jl. Bantul Km 4,8", latitude: -7.835321, longitude: 110.3112353 },
+      auth(),
+    );
+    expect(saved.status).toBe(200);
+    const savedData = saved.json.responseData as Record<string, unknown>;
+    expect(savedData.address).toBe("Jl. Bantul Km 4,8");
+    expect(savedData.latitude).toBe(-7.835321);
+    expect(savedData.longitude).toBe(110.3112353);
+
+    const cleared = await request(
+      "POST",
+      "/api/masjid/settings",
+      { address: null, latitude: null, longitude: null },
+      auth(),
+    );
+    expect(cleared.status).toBe(200);
+    const clearedData = cleared.json.responseData as Record<string, unknown>;
+    expect(clearedData.address).toBeNull();
+    expect(clearedData.latitude).toBeNull();
+    expect(clearedData.longitude).toBeNull();
+  });
 });
 
 describe("id-diff sync preserves created_at", () => {

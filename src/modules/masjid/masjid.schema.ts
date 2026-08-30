@@ -55,6 +55,14 @@ const iqomahField = z.number().int().min(1).max(60).optional();
 export const updateSettingsSchema = z.object({
   city_id: z.string().nullable().optional(),
   city_name: z.string().nullable().optional(),
+  address: z.string().max(500, "address must be max 500 characters").nullable().optional(),
+  latitude: z.number().min(-90, "latitude must be between -90 and 90").max(90, "latitude must be between -90 and 90").nullable().optional(),
+  longitude: z
+    .number()
+    .min(-180, "longitude must be between -180 and 180")
+    .max(180, "longitude must be between -180 and 180")
+    .nullable()
+    .optional(),
   medias: z.array(mediaItemSchema).optional(),
   hadists: z.array(hadistItemSchema).max(HADIST_LIMITS.maxItems, "Maximum 20 hadists allowed").optional(),
   running_texts: z
